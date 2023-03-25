@@ -71,7 +71,7 @@ socket.on("chat_message", (socket) => {
       store.setKill(socket.place);
       store.changeStatus('killed_player');
       if(store.user.admin === 'true') {
-        const audio = new Audio('/src/assets/audio/after_kill.mp3');
+        const audio = new Audio('/audio/after_kill.mp3');
         audio.play();
       }
       break;
@@ -79,12 +79,12 @@ socket.on("chat_message", (socket) => {
     case 'don':
       store.changeStatus('don');
       if(store.user.admin === 'true') {
-        const audio = new Audio('/src/assets/audio/don.mp3');
+        const audio = new Audio('/audio/don.mp3');
         audio.play();
       }
         setTimeout(()=>{
           if(store.user.admin === 'true') {
-            const audio = new Audio('/src/assets/audio/before_sheriff.mp3');
+            const audio = new Audio('/audio/before_sheriff.mp3');
             audio.play();
           }
           store.changeStatus('sheriff');
@@ -93,12 +93,12 @@ socket.on("chat_message", (socket) => {
 
     case 'morning':
       if(store.user.admin === 'true') {
-        const audio = new Audio('/src/assets/audio/after_sheriff.mp3');
+        const audio = new Audio('/audio/after_sheriff.mp3');
         audio.play();
       }
       setTimeout(()=>{
         if(store.user.admin === 'true') {
-          const audio = new Audio('/src/assets/audio/morning.mp3');
+          const audio = new Audio('/audio/morning.mp3');
           audio.play();
         }
         store.changeStatus('morning');
@@ -121,16 +121,16 @@ const join = (param) => {
 
 const start = () => {
   socket.emit('start', 'start');
-  const audio = new Audio('/src/assets/audio/greeting.mp3');
+  const audio = new Audio('/audio/greeting.mp3');
   audio.play();
 };
 
 
 const night = () => {
-  const audio = new Audio('/src/assets/audio/start.mp3');
+  const audio = new Audio('/audio/start.mp3');
   audio.play();
   setTimeout(()=>{
-    const audio = new Audio('/src/assets/audio/before_kill.mp3');
+    const audio = new Audio('/audio/before_kill.mp3');
     audio.play();
     socket.emit('start', 'night');
   }, 10000);
