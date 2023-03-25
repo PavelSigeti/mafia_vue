@@ -35,7 +35,7 @@ onMounted(() => {
   timer.value = setTimeout(() => {
     store.loaderUp();
     socket.emit('kill', 0);
-  }, 30000);
+  }, 33100);
   setInterval(()=>{
     timeCount.value--;
   }, 1000);

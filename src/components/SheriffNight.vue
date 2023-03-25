@@ -2,7 +2,7 @@
   <div class="timer" v-if="!donCheck">
     Шериф: {{timeCount}}
   </div>
-  <div class="don-check" v-if="select !== 0">
+  <div class="don-check" v-if="result !== null">
     Игрок №{{select}} - {{result}}
   </div>
   <div class="mafia-select" v-if="!donCheck">
@@ -40,7 +40,7 @@ onMounted(() => {
     donCheck.value = true;
     store.loaderUp();
     socket.emit('start', 'morning');
-  }, 20000);
+  }, 23100);
   interval.value = setInterval(()=>{
     timeCount.value--;
   }, 1000);
@@ -48,7 +48,7 @@ onMounted(() => {
 
 const donCheck = ref(false);
 
-const result = ref('');
+const result = ref(null);
 const selectTimer = ref();
 const socketTimer = ref();
 
@@ -66,7 +66,7 @@ const check = (param) => {
           if(result.value === 'Дон мафии') result.value = 'Мафия';
           store.loaderUp();
           setTimeout(()=>{
-            select.value = 0;
+            result.value = null;
           }, 3000);
         }, 3000);
         socketTimer.value = setTimeout(()=>{

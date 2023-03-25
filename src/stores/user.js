@@ -54,7 +54,7 @@ export const useUserStore = defineStore('user', {
             this.data = null;
             this.status = 'wait';
             this.killed = 0;
-            this.loader = false;
+            this.loader = true;
         },
 
         loaderUp() {
