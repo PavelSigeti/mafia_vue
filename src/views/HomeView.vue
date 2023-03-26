@@ -16,6 +16,9 @@
       <span>{{store.killed}}</span>
       <img src="../assets/img/blood.svg" alt="blood">
     </div>
+    <div class="reset-btn-wrapper">
+      <button v-if="store.status === 'morning'" @click="store.restart();">Отчистить данные</button>
+    </div>
     <div class="admin-buttons" v-if="
         store.user !== null
         && store.status !== 'night'

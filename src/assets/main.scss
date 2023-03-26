@@ -349,15 +349,17 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
-  height: 200px;
-  width: 340px;
+  height: calc(100vh - 100px);
+  width: 100vw;
   background-color: rgba(25, 25, 26, 0.8);
   border-radius: 10px;
   position: absolute;
-  top: calc(50% - 100px);
-  left: calc(50% - 150px);
+  top: 100px;
+  left: 0;
+  //top: calc(50% - 100px);
+  //left: calc(50% - 150px);
   z-index: 100;
 }
 .night-result {
@@ -370,10 +372,15 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   img {
     position: absolute;
     width: 300px;
     height: 300px;
     z-index: -1;
   }
+}
+.reset-btn-wrapper {
+  display: flex;
+  justify-content: center;
 }

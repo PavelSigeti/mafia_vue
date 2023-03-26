@@ -3,7 +3,7 @@
     Дон: {{timeCount}}
   </div>
   <div class="don-check" v-if="result !== null">
-    Игрок №{{select}} - {{result}}
+    Игрок №{{select}}&nbsp;-&nbsp;<u>{{result}}</u>
   </div>
   <div class="mafia-select" v-if="!donCheck">
     <div :class="[
