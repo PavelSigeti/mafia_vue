@@ -212,6 +212,7 @@ button {
   padding: 8px 16px;
   border-radius: 50px;
   cursor: pointer;
+  color: #19191a;
   transition: .3s;
   margin-bottom: 15px;
   &:hover {
@@ -383,4 +384,13 @@ button {
 .reset-btn-wrapper {
   display: flex;
   justify-content: center;
+}
+.api-btn {
+  font-family: Jost;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 15px;
+  top: 30px;
+  padding: 4px 12px;
 }

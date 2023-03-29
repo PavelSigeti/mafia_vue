@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', {
     actions: {
         userInit(resp) {
             const user = {
-                name: resp.name,
+                name: resp.username,
                 sid: resp.sid,
                 admin: resp.admin,
             }
@@ -28,13 +28,17 @@ export const useUserStore = defineStore('user', {
                 localStorage.setItem(GAME_DATA, JSON.stringify(data));
                 this.status = 'wait';
                 localStorage.setItem(GAME_STATUS, 'wait');
+                if(Object.keys(data).length === 0) {
+                    localStorage.removeItem(USER_DATA);
+                    this.user = null;
+                }
             }
         },
         startGame(data) {
             this.data = data;
             localStorage.setItem(GAME_DATA, JSON.stringify(data));
-            this.status = 'game';
-            localStorage.setItem(GAME_STATUS, 'game');
+            this.status = 'user_data';
+            localStorage.setItem(GAME_STATUS, 'user_data');
         },
 
         changeStatus(param) {

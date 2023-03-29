@@ -1,5 +1,5 @@
 <template>
-  <MafiaNight  v-if="(user.role === 'Мафия' || user.role === 'Дон мафии') && store.status === 'night'" />
+  <MafiaNight  v-if="(user.role === 'Мафия' || user.role === 'Дон мафии') && store.status === 'night_start'" />
   <DonCheck v-if="user.role === 'Дон мафии' && store.status === 'killed_player'" />
   <SheriffNight v-if="user.role === 'Шериф' && store.status === 'sheriff'" />
   <Loader v-if="store.loader" />

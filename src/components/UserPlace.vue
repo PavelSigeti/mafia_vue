@@ -11,11 +11,17 @@
       </div>
       Показать
     </div>
-    <div class="img-wrapper" v-if="showImg">
+    <div class="img-wrapper" v-if="showImg" @click="toggleRole">
       <img src="../assets/img/sheriff.svg" alt="sheriff" v-if="user.role==='Шериф'">
       <img src="../assets/img/don.svg" alt="sheriff" v-if="user.role==='Дон мафии'">
       <img src="../assets/img/maf.svg" alt="sheriff" v-if="user.role==='Мафия'">
       <img src="../assets/img/mir.svg" alt="sheriff" v-if="user.role==='Мирный житель'">
+    </div>
+
+    <div class="user-table">
+      <div class="user-item" v-for="(user) in store.data">
+        {{user.number}}. {{user.username}}
+      </div>
     </div>
   </div>
 </template>

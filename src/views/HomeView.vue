@@ -1,13 +1,14 @@
 <template>
   <header>
+    <button class="api-btn" @click="forceApi">API</button>
     Mafia
   </header>
   <main>
-    <Welcome @start="join" v-if="store.user === null"/>
+    <Welcome @start="join" v-if="store.status === 'wait' && store.user === null"/>
     <UserList v-if="store.status === 'wait'"/>
-    <UserPlace v-if="store.status === 'game'"/>
+    <UserPlace v-if="store.status === 'user_data'"/>
     <Loader v-if="loader"/>
-    <Night v-if="store.status === 'night'
+    <Night v-if="store.status === 'night_start'
         || store.status === 'killed_player'
         || store.status === 'don'
         || store.status === 'sheriff'
@@ -21,21 +22,17 @@
     </div>
     <div class="admin-buttons" v-if="
         store.user !== null
-        && store.status !== 'night'
-        && store.status !== 'killed_player'
-        && store.status !== 'don'
-        && store.status !== 'sheriff'
         && store.user.admin === 'true'
     ">
       <button @click="start" v-if="store.status === 'wait'">Начать игру</button>
-      <button @click="night" v-if="store.status === 'game'">Запустить ночь</button>
-      <button @click="restart" >Перезапустить</button>
+      <button @click="night" v-if="store.status === 'user_data'">Запустить ночь</button>
+      <button @click="restart">Перезапустить</button>
     </div>
   </main>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {io} from "socket.io-client";
 import Welcome from '../components/welcome.vue';
 import UserList from '../components/UserList.vue';
@@ -43,75 +40,29 @@ import UserPlace from '../components/UserPlace.vue';
 import Loader from '../ui/loader.vue';
 import {useUserStore} from "../stores/user.js";
 import Night from '../components/Night.vue';
+import {socketHandler} from "../utils/socket_handler";
 
 const store = useUserStore();
 const username = ref('');
+
+const forceApi = async () => {
+  try {
+    const response = await fetch('http://localhost:8000/current');
+    const data = await response.json()
+    socketHandler(store, data);
+  } catch(e) {
+    console.log(e.message);
+  }
+};
 
 const loader = ref(false);
 
 socket.on("chat_message", (socket) => {
   console.log('socket', socket);
-  switch (socket.type) {
-    case 'player_list':
-      store.setData(socket.data);
-      break;
-    case 'user_data':
-      store.userInit({...socket, ...{name: username.value}});
-      loader.value = false;
-      break;
-    case 'joined_list':
-      store.setData(socket.data);
-      break;
-    case 'users_data':
-      store.startGame(socket.data);
-      break;
+  socketHandler(store, socket);
 
-    case 'night_start':
-      store.changeStatus('night');
-      break;
-
-    case 'killed_player':
-      store.setKill(socket.place);
-      store.changeStatus('killed_player');
-      if(store.user.admin === 'true') {
-        const audio = new Audio('http://mafia.warpion.ru/after_kill.mp3');
-        audio.play();
-      }
-      break;
-
-    case 'don':
-      store.changeStatus('don');
-      if(store.user.admin === 'true') {
-        const audio = new Audio('http://mafia.warpion.ru/don.mp3');
-        audio.play();
-      }
-        setTimeout(()=>{
-          if(store.user.admin === 'true') {
-            const audio = new Audio('http://mafia.warpion.ru/before_sheriff.mp3');
-            audio.play();
-          }
-          store.changeStatus('sheriff');
-        }, 10000);
-      break;
-
-    case 'morning':
-      if(store.user.admin === 'true') {
-        const audio = new Audio('http://mafia.warpion.ru/after_sheriff.mp3');
-        audio.play();
-      }
-      setTimeout(()=>{
-        if(store.user.admin === 'true') {
-          const audio = new Audio('http://mafia.warpion.ru/morning.mp3');
-          audio.play();
-        }
-        store.changeStatus('morning');
-      }, 10000);
-      break;
-
-    case 'restart':
-      store.restart();
-      break;
-
+  if(socket.type === 'user_data') {
+    loader.value = false;
   }
 
 });
@@ -136,7 +87,7 @@ const night = () => {
     const audio = new Audio('http://mafia.warpion.ru/before_kill.mp3');
     audio.play();
     socket.emit('start', 'night');
-  }, 10000);
+  }, 6000);
 };
 
 const restart = () => {

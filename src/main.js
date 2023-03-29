@@ -7,7 +7,7 @@ import router from './router'
 import './assets/main.scss'
 import {io} from "socket.io-client";
 
-const socket = io("http://mafia.warpion.ru:8000/");
+const socket = io("http://localhost:8000/");
 
 window.socket = socket;
 
